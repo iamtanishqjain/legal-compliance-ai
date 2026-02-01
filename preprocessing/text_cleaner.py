@@ -1,5 +1,5 @@
 import re
-from pdf_to_text import extract_text_from_pdf
+from .pdf_to_text import extract_text_from_pdf
 
 def clean_text(text):
     # Remove multiple newlines

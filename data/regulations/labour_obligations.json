@@ -1,0 +1,22 @@
+[
+  {
+    "id": "minimum_wage",
+    "title": "Minimum Wage",
+    "description": "The employee must be paid at least the legally required minimum wage."
+  },
+  {
+    "id": "working_hours",
+    "title": "Working Hours",
+    "description": "The contract must specify working hours and overtime conditions."
+  },
+  {
+    "id": "termination_notice",
+    "title": "Termination Notice",
+    "description": "The contract must clearly mention notice period or termination conditions."
+  },
+  {
+    "id": "leave_policy",
+    "title": "Leave Policy",
+    "description": "The contract must define leave entitlements such as paid or unpaid leave."
+  }
+]

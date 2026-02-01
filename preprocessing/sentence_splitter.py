@@ -1,6 +1,7 @@
 import spacy
-from text_cleaner import clean_text
-from pdf_to_text import extract_text_from_pdf
+from .text_cleaner import clean_text
+from .pdf_to_text import extract_text_from_pdf
+
 
 nlp = spacy.load("en_core_web_sm")
 
