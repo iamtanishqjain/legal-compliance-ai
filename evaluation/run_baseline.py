@@ -4,6 +4,11 @@ from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
 from clause_extraction.baseline_tfidf import match_clauses
 from risk_engine.risk_scorer import score_obligation_risk, overall_contract_risk
+from explainability.explanation_generator import (
+    explain_obligation,
+    explain_contract,
+)
+
 
 
 PDF_PATH = "data/contracts/sample_contract.pdf"
@@ -34,6 +39,11 @@ for r in results:
 
     print(f"Risk Level: {risk}")
     final_risk = overall_contract_risk(obligation_risks)
+    explanation = explain_obligation(
+    r["obligation"], score, risk
+)
+
+print(f"Explanation: {explanation}")
 
 print("\n===== FINAL CONTRACT RISK =====")
 print(final_risk)
