@@ -2,7 +2,7 @@ from preprocessing.pdf_to_text import extract_text_from_pdf
 from preprocessing.text_cleaner import clean_text
 from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
-from clause_extraction.baseline_tfidf import match_clauses
+from clause_extraction.semantic_matcher import match_clauses_semantic
 from risk_engine.risk_scorer import score_obligation_risk, overall_contract_risk
 from explainability.explanation_generator import (
     explain_obligation,
@@ -20,7 +20,8 @@ sentences = split_into_sentences(cleaned_text)
 
 obligations = load_obligations(OBLIGATION_PATH)
 
-results = match_clauses(sentences, obligations)
+results = match_clauses_semantic(sentences, obligations)
+
 
 print("===== BASELINE COMPLIANCE CHECK =====\n")
 obligation_risks = []
@@ -47,5 +48,9 @@ print(f"Explanation: {explanation}")
 
 print("\n===== FINAL CONTRACT RISK =====")
 print(final_risk)
+contract_explanation = explain_contract(final_risk)
+
+print("\n===== CONTRACT EXPLANATION =====")
+print(contract_explanation)
 
 
