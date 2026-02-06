@@ -1,9 +1,10 @@
 [
-  {
-    "id": "minimum_wage",
-    "title": "Minimum Wage",
-    "description": "The employee must be paid at least the legally required minimum wage."
-  },
+{
+  "title": "Minimum Wage",
+  "description": "Employees must be paid at least the minimum wage",
+  "criticality": "HIGH",
+  "required_keywords": ["minimum wage", "salary", "payment"]
+},
   {
     "id": "working_hours",
     "title": "Working Hours",

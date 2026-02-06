@@ -1,13 +1,18 @@
 from risk_engine.risk_rules import HIGH_RISK, MEDIUM_RISK, LOW_RISK
 
 
-def score_obligation_risk(similarity_score: float) -> str:
-    if similarity_score < 0.10:
-        return HIGH_RISK
-    elif similarity_score < 0.30:
-        return MEDIUM_RISK
+def score_obligation_risk(similarity, coverage, criticality):
+    if similarity < 0.4 or coverage < 0.3:
+        base_risk = "HIGH"
+    elif similarity < 0.6 or coverage < 0.6:
+        base_risk = "MEDIUM"
     else:
-        return LOW_RISK
+        base_risk = "LOW"
+
+    if criticality == "HIGH" and base_risk != "LOW":
+        return "HIGH"
+
+    return base_risk
 
 
 def overall_contract_risk(obligation_risks: list) -> str:
@@ -17,3 +22,14 @@ def overall_contract_risk(obligation_risks: list) -> str:
         return MEDIUM_RISK
     else:
         return LOW_RISK
+def coverage_score(sentence, required_keywords):
+    if not required_keywords:
+        return 1.0  # semantic obligation, no keyword coverage required
+
+    hits = 0
+    for kw in required_keywords:
+        if kw.lower() in sentence.lower():
+            hits += 1
+
+    return hits / len(required_keywords)
+

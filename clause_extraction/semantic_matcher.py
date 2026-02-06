@@ -25,9 +25,12 @@ def match_clauses_semantic(sentences, obligations, threshold=0.45):
             matched_sentence = None
 
         results.append({
-            "obligation": obligation["title"],
-            "score": float(best_score),
-            "matched_sentence": matched_sentence
-        })
+    "obligation": obligation["title"],
+    "score": float(best_score),
+    "matched_sentence": matched_sentence,
+    "required_keywords": obligation.get("required_keywords", []),
+    "criticality": obligation.get("criticality", "MEDIUM")
+})
+
 
     return results
