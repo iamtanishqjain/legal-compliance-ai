@@ -1,27 +1,40 @@
 from risk_engine.risk_rules import HIGH_RISK, MEDIUM_RISK, LOW_RISK
 
 
-def score_obligation_risk(similarity, coverage, criticality):
-    if similarity < 0.4 or coverage < 0.3:
-        base_risk = "HIGH"
-    elif similarity < 0.6 or coverage < 0.6:
-        base_risk = "MEDIUM"
-    else:
-        base_risk = "LOW"
+from risk_engine.thresholds import SIMILARITY_THRESHOLDS, COVERAGE_THRESHOLDS
 
-    if criticality == "HIGH" and base_risk != "LOW":
+def score_obligation_risk(similarity, coverage, criticality):
+    # Force HIGH risk if obligation is legally critical
+    if criticality == "HIGH" and similarity < SIMILARITY_THRESHOLDS["MEDIUM"]:
         return "HIGH"
 
-    return base_risk
-
-
-def overall_contract_risk(obligation_risks: list) -> str:
-    if HIGH_RISK in obligation_risks:
-        return HIGH_RISK
-    elif obligation_risks.count(MEDIUM_RISK) >= 2:
-        return MEDIUM_RISK
+    # Similarity-based decision
+    if similarity >= SIMILARITY_THRESHOLDS["LOW"]:
+        sim_risk = "LOW"
+    elif similarity >= SIMILARITY_THRESHOLDS["MEDIUM"]:
+        sim_risk = "MEDIUM"
     else:
-        return LOW_RISK
+        sim_risk = "HIGH"
+
+    # Coverage-based decision
+    if coverage >= COVERAGE_THRESHOLDS["LOW"]:
+        cov_risk = "LOW"
+    elif coverage >= COVERAGE_THRESHOLDS["MEDIUM"]:
+        cov_risk = "MEDIUM"
+    else:
+        cov_risk = "HIGH"
+
+    # Final risk = worst case
+    return max(sim_risk, cov_risk, key=lambda x: ["LOW", "MEDIUM", "HIGH"].index(x))
+
+
+def overall_contract_risk(risks):
+    if "HIGH" in risks:
+        return "HIGH"
+    if "MEDIUM" in risks:
+        return "MEDIUM"
+    return "LOW"
+
 def coverage_score(sentence, required_keywords):
     if not required_keywords:
         return 1.0  # semantic obligation, no keyword coverage required
