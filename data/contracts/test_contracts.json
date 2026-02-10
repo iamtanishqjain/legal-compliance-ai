@@ -1,0 +1,52 @@
+[
+  {
+    "id": "contract_1",
+    "text": "The employee shall be paid wages in accordance with applicable minimum wage laws. The company will follow all labour regulations issued by the government.",
+    "expected": {
+      "Minimum Wage": "PRESENT",
+      "Working Hours": "UNKNOWN",
+      "Termination Notice": "MISSING",
+      "Leave Policy": "MISSING"
+    }
+  },
+  {
+    "id": "contract_2",
+    "text": "This contract is valid for a period of twelve months commencing from the date of signing. Either party may terminate this agreement with one month notice.",
+    "expected": {
+      "Minimum Wage": "MISSING",
+      "Working Hours": "MISSING",
+      "Termination Notice": "PRESENT",
+      "Leave Policy": "MISSING"
+    }
+  },
+  {
+    "id": "contract_3",
+    "text": "Employees shall work 8 hours per day and 48 hours per week. Overtime shall be compensated as per company policy.",
+    "expected": {
+      "Minimum Wage": "MISSING",
+      "Working Hours": "PRESENT",
+      "Termination Notice": "MISSING",
+      "Leave Policy": "MISSING"
+    }
+  },
+  {
+    "id": "contract_4",
+    "text": "The employee is entitled to 12 paid leaves per year along with national holidays.",
+    "expected": {
+      "Minimum Wage": "MISSING",
+      "Working Hours": "MISSING",
+      "Termination Notice": "MISSING",
+      "Leave Policy": "PRESENT"
+    }
+  },
+  {
+    "id": "contract_5",
+    "text": "The company agrees to comply with all labour laws applicable in the jurisdiction.",
+    "expected": {
+      "Minimum Wage": "UNKNOWN",
+      "Working Hours": "UNKNOWN",
+      "Termination Notice": "UNKNOWN",
+      "Leave Policy": "UNKNOWN"
+    }
+  }
+]
