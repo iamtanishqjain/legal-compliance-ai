@@ -1,5 +1,7 @@
 import json
 from evaluation.run_on_text import run_on_text
+from risk_engine.confidence import confidence_score, needs_manual_review
+
 
 TEST_PATH = "data/contracts/test_contracts.json"
 
