@@ -4,6 +4,8 @@ from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
 from clause_extraction.semantic_matcher import match_clauses_semantic
 from risk_engine.confidence import confidence_score, needs_manual_review
+from evaluation.metrics import summarize_results, compliance_score
+
 
 from risk_engine.risk_scorer import (
     score_obligation_risk,
@@ -56,8 +58,12 @@ for r in results:
     )
 
     confidence = confidence_score(score, coverage)
-    review_flag = needs_manual_review(confidence, r["criticality"])
 
+
+    review_flag = needs_manual_review(confidence, r["criticality"])
+    r["risk"] = risk
+    r["confidence"] = confidence
+    r["manual_review"] = review_flag
     print(f"Coverage Score: {coverage:.2f}")
     print(f"Confidence Score: {confidence}")
     print(f"Risk Level: {risk}")
@@ -96,3 +102,14 @@ contract_explanation = explain_contract(final_risk)
 
 print("\n===== CONTRACT EXPLANATION =====")
 print(contract_explanation)
+print("\n===== COMPLIANCE DASHBOARD =====")
+
+summary = summarize_results(results)
+score = compliance_score(summary)
+
+print(f"Total Obligations Checked: {summary['total']}")
+print(f"LOW Risk: {summary['LOW']}")
+print(f"MEDIUM Risk: {summary['MEDIUM']}")
+print(f"HIGH Risk: {summary['HIGH']}")
+print(f"Manual Reviews Required: {summary['manual_review']}")
+print(f"\nOverall Compliance Score: {score}%")
