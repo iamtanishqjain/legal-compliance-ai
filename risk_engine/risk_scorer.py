@@ -1,48 +1,65 @@
-from risk_engine.risk_rules import HIGH_RISK, MEDIUM_RISK, LOW_RISK
-
-
-from risk_engine.thresholds import SIMILARITY_THRESHOLDS, COVERAGE_THRESHOLDS
-
-def score_obligation_risk(similarity, coverage, criticality):
-    # Force HIGH risk if obligation is legally critical
-    if criticality == "HIGH" and similarity < SIMILARITY_THRESHOLDS["MEDIUM"]:
-        return "HIGH"
-
-    # Similarity-based decision
-    if similarity >= SIMILARITY_THRESHOLDS["LOW"]:
-        sim_risk = "LOW"
-    elif similarity >= SIMILARITY_THRESHOLDS["MEDIUM"]:
-        sim_risk = "MEDIUM"
-    else:
-        sim_risk = "HIGH"
-
-    # Coverage-based decision
-    if coverage >= COVERAGE_THRESHOLDS["LOW"]:
-        cov_risk = "LOW"
-    elif coverage >= COVERAGE_THRESHOLDS["MEDIUM"]:
-        cov_risk = "MEDIUM"
-    else:
-        cov_risk = "HIGH"
-
-    # Final risk = worst case
-    return max(sim_risk, cov_risk, key=lambda x: ["LOW", "MEDIUM", "HIGH"].index(x))
-
-
-def overall_contract_risk(risks):
-    if "HIGH" in risks:
-        return "HIGH"
-    if "MEDIUM" in risks:
-        return "MEDIUM"
-    return "LOW"
+# risk_engine/risk_scorer.py
 
 def coverage_score(sentence, required_keywords):
-    if not required_keywords:
-        return 1.0  # semantic obligation, no keyword coverage required
+    """
+    Measures how many required keywords appear in the matched sentence.
+    Returns value between 0 and 1.
+    """
+    if not sentence or not required_keywords:
+        return 0.0
 
-    hits = 0
-    for kw in required_keywords:
-        if kw.lower() in sentence.lower():
-            hits += 1
+    sentence_lower = sentence.lower()
+    hits = sum(1 for kw in required_keywords if kw.lower() in sentence_lower)
+
+    if len(required_keywords) == 0:
+        return 0.0
 
     return hits / len(required_keywords)
 
+
+# --- THRESHOLDS (You will tune these) ---
+SIMILARITY_HIGH = 0.65
+SIMILARITY_MEDIUM = 0.45
+
+COVERAGE_GOOD = 0.6
+COVERAGE_PARTIAL = 0.3
+
+
+def score_obligation_risk(similarity, coverage, criticality):
+    """
+    Combines semantic similarity + keyword coverage + obligation criticality
+    to determine risk level.
+    """
+
+    # Adjust similarity importance by criticality
+    if criticality == "HIGH":
+        similarity_weight = 0.6
+        coverage_weight = 0.4
+    else:
+        similarity_weight = 0.7
+        coverage_weight = 0.3
+
+    combined_score = (similarity * similarity_weight) + (coverage * coverage_weight)
+
+    # --- Risk Classification ---
+    if combined_score >= 0.7:
+        return "LOW"
+    elif combined_score >= 0.45:
+        return "MEDIUM"
+    else:
+        return "HIGH"
+
+
+def overall_contract_risk(obligation_risks):
+    """
+    Determines overall contract risk.
+    """
+    if not obligation_risks:
+        return "UNKNOWN"
+
+    if "HIGH" in obligation_risks:
+        return "HIGH"
+    elif "MEDIUM" in obligation_risks:
+        return "MEDIUM"
+    else:
+        return "LOW"
