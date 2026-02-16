@@ -1,0 +1,45 @@
+{
+    "timestamp": "2026-02-16T22:24:27.424759",
+    "total_obligations": 8,
+    "risk_distribution": {
+        "LOW": 0,
+        "MEDIUM": 0,
+        "HIGH": 0
+    },
+    "manual_reviews_required": 0,
+    "compliance_score_percent": 0.0,
+    "detailed_results": [
+        {
+            "obligation": "Minimum Wage",
+            "score": 0.20616118609905243,
+            "matched_sentence": null,
+            "required_keywords": [
+                "minimum wage",
+                "salary",
+                "payment"
+            ],
+            "criticality": "HIGH"
+        },
+        {
+            "obligation": "Working Hours",
+            "score": 0.4373510479927063,
+            "matched_sentence": null,
+            "required_keywords": [],
+            "criticality": "MEDIUM"
+        },
+        {
+            "obligation": "Termination Notice",
+            "score": 0.5582184791564941,
+            "matched_sentence": "This contract is valid for a period of ______months commencing from the signature date.",
+            "required_keywords": [],
+            "criticality": "MEDIUM"
+        },
+        {
+            "obligation": "Leave Policy",
+            "score": 0.3789840638637543,
+            "matched_sentence": null,
+            "required_keywords": [],
+            "criticality": "MEDIUM"
+        }
+    ]
+}

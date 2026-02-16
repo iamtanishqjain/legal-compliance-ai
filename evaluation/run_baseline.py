@@ -1,5 +1,7 @@
 from preprocessing.pdf_to_text import extract_text_from_pdf
 from preprocessing.text_cleaner import clean_text
+from evaluation.report_generator import generate_report, save_report
+
 from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
 from clause_extraction.semantic_matcher import match_clauses_semantic
@@ -58,12 +60,8 @@ for r in results:
     )
 
     confidence = confidence_score(score, coverage)
-
-
     review_flag = needs_manual_review(confidence, r["criticality"])
-    r["risk"] = risk
-    r["confidence"] = confidence
-    r["manual_review"] = review_flag
+
     print(f"Coverage Score: {coverage:.2f}")
     print(f"Confidence Score: {confidence}")
     print(f"Risk Level: {risk}")
@@ -80,16 +78,6 @@ for r in results:
 
     obligation_risks.append(risk)
 
-    print(f"Risk Level: {risk}")
-
-    explanation = explain_obligation(
-        r["obligation"],
-        score,
-        risk
-    )
-
-    print(f"Explanation: {explanation}")
-    print("\n")
 
 
 # ✅ FINAL CONTRACT RISK (ONLY ONCE)
@@ -104,8 +92,12 @@ print("\n===== CONTRACT EXPLANATION =====")
 print(contract_explanation)
 print("\n===== COMPLIANCE DASHBOARD =====")
 
+
 summary = summarize_results(results)
 score = compliance_score(summary)
+# --- GENERATE FORMAL REPORT ---
+
+
 
 print(f"Total Obligations Checked: {summary['total']}")
 print(f"LOW Risk: {summary['LOW']}")
@@ -113,3 +105,9 @@ print(f"MEDIUM Risk: {summary['MEDIUM']}")
 print(f"HIGH Risk: {summary['HIGH']}")
 print(f"Manual Reviews Required: {summary['manual_review']}")
 print(f"\nOverall Compliance Score: {score}%")
+
+report = generate_report(results, summary, score)
+file_path = save_report(report)
+
+print("\n===== REPORT SAVED =====")
+print(f"Report file created at: {file_path}")
