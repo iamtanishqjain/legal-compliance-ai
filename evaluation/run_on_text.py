@@ -20,3 +20,4 @@ def run_on_text(raw_text):
             output[r["obligation"]] = "MISSING"
 
     return output
+    return results, final_risk
