@@ -7,7 +7,7 @@ from preprocessing.pdf_to_text import extract_text_from_pdf
 from preprocessing.text_cleaner import clean_text
 from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
-from clause_extraction.baseline_tfidf import match_clauses
+from clause_matching.baseline_tfidf import match_clauses
 from risk_engine.risk_scorer import score_obligation_risk, overall_contract_risk, coverage_score
 
 st.set_page_config(page_title="Legal Compliance Checker", layout="wide")

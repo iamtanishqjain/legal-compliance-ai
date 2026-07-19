@@ -1,7 +1,7 @@
 from preprocessing.text_cleaner import clean_text
 from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
-from clause_extraction.semantic_matcher import match_clauses_semantic
+from clause_matching.semantic_matcher import match_clauses_semantic
 from risk_engine.risk_scorer import (
     score_obligation_risk,
     overall_contract_risk,

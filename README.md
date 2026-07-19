@@ -10,7 +10,7 @@ findings that need human review — a decision-support tool, not a legal opinion
 ```
 frontend/   React + Vite + Tailwind — the web UI
 api/        FastAPI backend (JWT auth + /analyze endpoint)
-clause_extraction/   Sentence-transformer semantic matching
+clause_matching/     Sentence-transformer semantic matching
 risk_engine/         Risk scoring, confidence, manual-review rules
 explainability/       Human-readable explanations per finding
 preprocessing/         PDF → text → sentences
