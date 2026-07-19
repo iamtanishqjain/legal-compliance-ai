@@ -60,7 +60,7 @@ for r in results:
     )
 
     confidence = confidence_score(score, coverage)
-    review_flag = needs_manual_review(confidence, r["criticality"])
+    review_flag = needs_manual_review(confidence, r["criticality"], risk)
 
     print(f"Coverage Score: {coverage:.2f}")
     print(f"Confidence Score: {confidence}")
@@ -70,7 +70,7 @@ for r in results:
         print("⚠️ Manual Review Required")
 
     explanation = explain_obligation(
-        r["obligation"], score, risk
+        r["obligation"], score, risk, review_flag
     )
 
     print(f"Explanation: {explanation}")

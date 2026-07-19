@@ -7,12 +7,16 @@ def confidence_score(similarity, coverage):
     return round((similarity * 0.7) + (coverage * 0.3), 2)
 
 
-def needs_manual_review(confidence, criticality):
+def needs_manual_review(confidence, criticality, risk=None):
     """
     Manual review is required if:
     - Confidence is low
     - OR obligation is critical and confidence not strong
+    - OR the obligation was scored as HIGH risk (never auto-clear a HIGH-risk finding)
     """
+
+    if risk == "HIGH":
+        return True
 
     if criticality == "HIGH" and confidence < 0.6:
         return True

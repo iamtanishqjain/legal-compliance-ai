@@ -21,7 +21,11 @@ def evaluate():
 
     for t in tests:
         print(f"Contract ID: {t['id']}")
-        predicted = run_on_text(t["text"])
+        results, _ = run_on_text(t["text"])
+        predicted = {
+            r["obligation"]: ("PRESENT" if r["matched_sentence"] else "MISSING")
+            for r in results
+        }
         expected = t["expected"]
 
         for obligation, exp_value in expected.items():

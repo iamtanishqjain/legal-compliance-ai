@@ -1,21 +1,20 @@
 def summarize_results(results):
     summary = {
-    "total": len(results),
-    "LOW": 0,
-    "MEDIUM": 0,
-    "HIGH": 0,
-    "manual_review": 0,
-    "UNKNOWN": 0
-}
+        "total": len(results),
+        "LOW": 0,
+        "MEDIUM": 0,
+        "HIGH": 0,
+        "manual_review": 0,
+        "UNKNOWN": 0
+    }
 
     for r in results:
-        summary["total"] += 1
         risk_level = r.get("risk")
 
-    if risk_level:
-        summary[risk_level] += 1
-    else:
-        summary["UNKNOWN"] += 1
+        if risk_level:
+            summary[risk_level] += 1
+        else:
+            summary["UNKNOWN"] += 1
 
         if r.get("manual_review"):
             summary["manual_review"] += 1
@@ -32,6 +31,8 @@ def compliance_score(summary):
 
     safe = summary["LOW"] + summary["MEDIUM"]
     return round((safe / summary["total"]) * 100, 2)
+
+
 def risk_percentages(summary):
     total = summary["total"]
     if total == 0:

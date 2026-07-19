@@ -8,7 +8,7 @@ from preprocessing.text_cleaner import clean_text
 from preprocessing.sentence_splitter import split_into_sentences
 from regulation_engine.regulation_loader import load_obligations
 from clause_extraction.baseline_tfidf import match_clauses
-from risk_engine.risk_scorer import score_obligation_risk, overall_contract_risk
+from risk_engine.risk_scorer import score_obligation_risk, overall_contract_risk, coverage_score
 
 st.set_page_config(page_title="Legal Compliance Checker", layout="wide")
 
@@ -27,6 +27,7 @@ if uploaded_file:
     sentences = split_into_sentences(cleaned)
 
     results = match_clauses(sentences, obligations)
+    obligations_by_title = {o["title"]: o for o in obligations}
 
     st.subheader("🔍 Obligation Analysis")
 
@@ -41,7 +42,13 @@ if uploaded_file:
         else:
             st.error("Clause not found")
 
-        risk = score_obligation_risk(r["score"])
+        obligation = obligations_by_title.get(r["obligation"], {})
+        coverage = coverage_score(r["matched_sentence"], obligation.get("required_keywords", []))
+        risk = score_obligation_risk(
+            similarity=r["score"],
+            coverage=coverage,
+            criticality=obligation.get("criticality", "MEDIUM"),
+        )
         risks.append(risk)
 
         st.write(f"**Risk Level:** {risk}")

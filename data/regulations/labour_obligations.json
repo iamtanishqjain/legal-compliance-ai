@@ -1,23 +1,30 @@
 [
-{
-  "title": "Minimum Wage",
-  "description": "Employees must be paid at least the minimum wage",
-  "criticality": "HIGH",
-  "required_keywords": ["minimum wage", "salary", "payment"]
-},
+  {
+    "id": "minimum_wage",
+    "title": "Minimum Wage",
+    "description": "Employees must be paid at least the minimum wage",
+    "criticality": "HIGH",
+    "required_keywords": ["minimum wage", "salary", "payment"]
+  },
   {
     "id": "working_hours",
     "title": "Working Hours",
-    "description": "The contract must specify working hours and overtime conditions."
+    "description": "The contract must specify working hours and overtime conditions.",
+    "criticality": "MEDIUM",
+    "required_keywords": ["working hours", "overtime"]
   },
   {
     "id": "termination_notice",
     "title": "Termination Notice",
-    "description": "The contract must clearly mention notice period or termination conditions."
+    "description": "The contract must clearly mention notice period or termination conditions.",
+    "criticality": "HIGH",
+    "required_keywords": ["notice period", "termination"]
   },
   {
     "id": "leave_policy",
     "title": "Leave Policy",
-    "description": "The contract must define leave entitlements such as paid or unpaid leave."
+    "description": "The contract must define leave entitlements such as paid or unpaid leave.",
+    "criticality": "MEDIUM",
+    "required_keywords": ["leave", "paid leave"]
   }
 ]

@@ -1,9 +1,11 @@
+import os
+import bcrypt
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-SECRET_KEY = "supersecretkey"
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "supersecretkey")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -12,7 +14,7 @@ security = HTTPBearer()
 fake_user_db = {
     "admin": {
         "username": "admin",
-        "password": "admin123"
+        "hashed_password": bcrypt.hashpw(b"admin123", bcrypt.gensalt()),
     }
 }
 
@@ -26,7 +28,7 @@ def create_access_token(data: dict):
 
 def authenticate_user(username: str, password: str):
     user = fake_user_db.get(username)
-    if not user or user["password"] != password:
+    if not user or not bcrypt.checkpw(password.encode(), user["hashed_password"]):
         return False
     return user
 
