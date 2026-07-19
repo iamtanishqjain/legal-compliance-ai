@@ -7,7 +7,7 @@
 ![React](https://img.shields.io/badge/Frontend-React_%2B_Vite-61DAFB?logo=react)
 ![Sentence Transformers](https://img.shields.io/badge/NLP-MiniLM_Embeddings-informational)
 ![Eval](https://img.shields.io/badge/Eval_Accuracy-65%25_(13%2F20)-yellow)
-![Deploy](https://img.shields.io/badge/Deploy-Vercel_%2B_Render-black?logo=vercel)
+![Docker](https://img.shields.io/badge/Container-Docker_Ready-2496ED?logo=docker)
 
 ---
 
@@ -108,8 +108,8 @@ legal-compliance-ai/
 │   └── contracts/test_contracts.json          Labeled test set for evaluation
 │
 ├── ui/app.py                  Legacy Streamlit prototype (TF-IDF baseline)
-├── Dockerfile                  Backend container (used by Render)
-└── render.yaml                 Render blueprint config
+├── Dockerfile                  Backend container definition
+└── render.yaml                 Render blueprint config (see Deployment notes below)
 ```
 
 ---
@@ -138,13 +138,22 @@ employment contract PDF.
 
 ---
 
-## Deployment
+## Deployment Notes
 
-- **Backend** — deployed to [Render](https://render.com) as a Docker web service
-  (see `render.yaml` / `Dockerfile`). Requires `JWT_SECRET_KEY` and `ALLOWED_ORIGINS`
-  env vars.
-- **Frontend** — deployed to [Vercel](https://vercel.com). Requires `VITE_API_URL`
-  pointing at the deployed backend.
+The app is containerized and deploy-ready (`Dockerfile`, `render.yaml`,
+`frontend/vercel.json`), but currently runs locally rather than on a public URL.
+
+The backend's ML stack (torch + sentence-transformers + spaCy) needs roughly
+600MB-1GB of RAM at idle, which exceeds the free tier on most PaaS platforms
+(Render free tier caps at 512MB; Hugging Face Spaces now requires a paid plan
+for Docker SDK). A production deploy would need either a paid instance
+(e.g. Render Starter, ~$7/mo) or a platform with a generous free compute tier
+(e.g. Google Cloud Run).
+
+- **Backend** — `uvicorn api.server:app`, containerized via `Dockerfile`.
+  Needs `JWT_SECRET_KEY` and `ALLOWED_ORIGINS` env vars set for a real deploy.
+- **Frontend** — static Vite build, deployable as-is to Vercel/Netlify once
+  `VITE_API_URL` points at a live backend.
 
 ---
 
@@ -153,7 +162,7 @@ employment contract PDF.
 - **Backend:** FastAPI, python-jose (JWT), bcrypt, pdfplumber, spaCy, sentence-transformers, scikit-learn
 - **Frontend:** React, Vite, Tailwind CSS
 - **Model:** `all-MiniLM-L6-v2` (sentence-transformers)
-- **Deployment:** Docker, Render, Vercel
+- **Containerization:** Docker
 
 ---
 
